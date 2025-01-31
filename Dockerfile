@@ -10,6 +10,6 @@ FROM alpine:latest
 
 WORKDIR /app
 
-COPY --from=builder /app/target/debug/calculator /app/calculator
+COPY --from=builder /app/target/debug/Calculator /app/calculator
 
 CMD ["/app/calculator"]
