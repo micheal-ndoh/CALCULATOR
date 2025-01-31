@@ -1,14 +1,15 @@
-FROM rust:latest
+FROM rust:alpine AS builder
 
-WORKDIR /usr/src/app
+WORKDIR /app
 
 COPY . .
 
-# Build the Rust application
-RUN cargo build --release
+RUN cargo build
 
-# Set the command to run the executable
-CMD ["./target/release/Calculator"]
+FROM alpine:latest
 
+WORKDIR /app
 
+COPY --from=builder /app/target/debug/calculator /app/calculator
 
+CMD ["/app/calculator"]

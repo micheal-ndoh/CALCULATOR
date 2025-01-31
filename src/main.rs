@@ -52,7 +52,7 @@ fn main() {
             continue;
         };
 
-        println!("Answer to {} {} {} is {}", num1, operation, num2, answer);
+        print!(" {} {} {} = {}", num1, operation, num2, answer);
         log(num1, &operation, num2, answer);
     }
 }
@@ -68,7 +68,7 @@ fn log(num1: f64, operation: &str, num2: f64, answer: f64) {
     let log_entry = format!("{} {} {} = {}", num1, operation, num2, answer);
     let mut file = OpenOptions::new()
         .append(true)
-        .create_new(true)
+        .create(true)
         .open("history.txt")
         .expect("Cannot open file");
     file.write_all(log_entry.as_bytes()).expect("Cannot write to file");
