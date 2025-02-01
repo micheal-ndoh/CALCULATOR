@@ -1,4 +1,4 @@
-name: Build and Push Calculator Docker Image
+name: Building and Pushing Calculator Docker Image
 
 on:
   push:
