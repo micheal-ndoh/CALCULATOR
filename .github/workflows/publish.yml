@@ -1,9 +1,10 @@
-name: Build and Push Docker Image
+name: Build and Push Calculator Docker Image
 
 on:
   push:
     branches:
       - main
+      - master
 
 jobs:
   build:
