@@ -1,4 +1,4 @@
-use std::io;
+use std::{io, ops::Add};
 mod add;
 mod subtract;
 mod multiply;
@@ -13,22 +13,20 @@ use factorial::factorial;
 use multiply::multiply;
 use power::power;
 use modulus::modulus;
+mod calculator;
+use calculator::Calculator;
 
 fn input(prompt: &str) -> String {
     println!("{}", prompt);
     let mut input = String::new();
-    io::stdin().read_line(&mut input).unwrap();
+    io::stdin().read_line(&mut input).expect("Failed to read line");
     input
 }
 
 fn main() {
-    let num1 = input("Enter first number: ");
-    let operator = input("Enter operator (+, -, *, /, ^, %, !): ");
-    let num2 = if operator.trim() != "!" {
-        input("Enter second number: ")
-    } else {
-        "0".to_string()
-    };
+    let num1 = input("Enter the first number: ");
+    let num2 = input("Enter the second number: ");
+    let operator = input("Enter the operator (+ - * / ^ ! %): ");
 
     let num1: f64 = match num1.trim().parse() {
         Ok(n) => n,
@@ -46,28 +44,30 @@ fn main() {
         }
     };
 
+    let calculator = Calculator { num1, num2 };
+
     let answer = if operator.trim() == "+" {
-        add::add(num1, num2)
+        calculator.add(num2)
     } else if operator.trim() == "-" {
-        subtract::subtract(num1, num2)
+        calculator.subtract(num2)
     } else if operator.trim() == "*" {
-        multiply::multiply(num1, num2)
+        calculator.multiply(num2)
     } else if operator.trim() == "/" {
-        match divide::divide(num1, num2) {
+        match calculator.divide(num2) {
             Ok(result) => result,
             Err(e) => {
                 println!("{}", e);
-                return;
+                return; 
             }
         }
     } else if operator.trim() == "^" {
-        power::power(num1, num2)
+        calculator.power(num2)
     } else if operator.trim() == "%" {
-        modulus::modulus(num1, num2)
+        calculator.modulus(num2)
     } else if operator.trim() == "!" {
-        factorial::factorial(num1 as u64) as f64
+        calculator.factorial() as f64
     } else {
-        println!("Invalid operatorc, enter a (+ - * / ^ ! % ");
+        println!("Invalid operator, enter a (+ - * / ^ ! %)");
         return;
     };
 
