@@ -38,14 +38,11 @@ jobs:
         uses: docker/build-push-action@v4
         with:
           context: .
-          push: false
+          push: true
           tags: |
             ghcr.io/${{ env.REPO_OWNER }}/${{ env.REPO_NAME }}:latest
 
-      - name: Optimize Docker Image with DockerSlim
-        run: |
-          sudo docker run --rm -v /var/run/docker.sock:/var/run/docker.sock dslim/slim build --tag ghcr.io/${{ env.REPO_OWNER }}/${{ env.REPO_NAME }}:latest-slim ghcr.io/${{ env.REPO_OWNER }}/${{ env.REPO_NAME }}:latest
-
+   
       - name: Push Original Docker Image
         uses: docker/build-push-action@v4
         with:
@@ -55,11 +52,3 @@ jobs:
             ghcr.io/${{ env.REPO_OWNER }}/${{ env.REPO_NAME }}:latest
             ghcr.io/${{ env.REPO_OWNER }}/${{ env.REPO_NAME }}:${{ github.sha }}
 
-      - name: Push Optimized Docker Image
-        uses: docker/build-push-action@v4
-        with:
-          context: .
-          push: true
-          tags: |
-            ghcr.io/${{ env.REPO_OWNER }}/${{ env.REPO_NAME }}:latest-slim
-            ghcr.io/${{ env.REPO_OWNER }}/${{ env.REPO_NAME }}:${{ github.sha }}-slim
